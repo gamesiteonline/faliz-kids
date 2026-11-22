@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face {
+    font-family: Fredoka;
+    src: url("file:///workspace/public/fonts/fredoka-700.ttf") format("truetype");
+    font-weight: 700;
+  }
+  @font-face {
+    font-family: Nunito;
+    src: url("file:///workspace/public/fonts/nunito-800.ttf") format("truetype");
+    font-weight: 800;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; background: #7ED0FF; }
+  .stage { position: relative; width: 1200px; height: 630px; overflow: hidden; }
+  svg.world { position: absolute; inset: 0; width: 1200px; height: 630px; }
+  .medallion {
+    position: absolute;
+    right: 48px;
+    top: 55px;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    border: 12px solid #FFB703;
+    outline: 8px solid #FFF6E4;
+    box-shadow: 0 14px 0 #1C2B4A;
+    overflow: hidden;
+    background: #FFF6E4;
+    z-index: 1;
+  }
+  .medallion img { width: 100%; height: 100%; object-fit: cover; object-position: center 40%; }
+  .lockup {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    text-align: center;
+    width: max-content;
+    background: rgba(255, 246, 228, 0.94);
+    border: 6px solid #FFB703;
+    border-radius: 40px;
+    padding: 22px 40px 20px;
+    box-shadow: 0 10px 0 #1C2B4A;
+  }
+  .line1, .line2 {
+    font-family: Fredoka, sans-serif;
+    font-weight: 700;
+    color: #FFB703;
+    -webkit-text-stroke: 8px #1C2B4A;
+    paint-order: stroke fill;
+    line-height: 0.88;
+    letter-spacing: 0.01em;
+    display: block;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .line1 { font-size: 168px; }
+  .line2 { font-size: 108px; margin-top: 8px; color: #FFB703; }
+  .tag {
+    margin-top: 14px;
+    font-family: Nunito, sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: 0.16em;
+    color: #1C2B4A;
+    display: block;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+  }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <svg class="world" viewBox="0 0 1200 630" aria-hidden="true">
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#7ED0FF"/>
+          <stop offset="0.55" stop-color="#BFE8FF"/>
+          <stop offset="1" stop-color="#FFF6E4"/>
+        </linearGradient>
+        <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#7ED0FF"/>
+          <stop offset="1" stop-color="#2F6BFF"/>
+        </linearGradient>
+        <linearGradient id="isle" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#5BE884"/>
+          <stop offset="1" stop-color="#2EAF55"/>
+        </linearGradient>
+      </defs>
+      <rect width="1200" height="630" fill="url(#sky)"/>
+      <circle cx="980" cy="120" r="78" fill="#FFB703"/>
+      <circle cx="980" cy="120" r="108" fill="#FFB703" opacity="0.28"/>
+      <ellipse cx="180" cy="110" rx="70" ry="28" fill="#FFF6E4"/>
+      <ellipse cx="230" cy="108" rx="46" ry="22" fill="#FFF6E4"/>
+      <ellipse cx="140" cy="118" rx="36" ry="18" fill="#FFF6E4"/>
+      <ellipse cx="620" cy="78" rx="54" ry="20" fill="#FFF6E4" opacity="0.9"/>
+      <ellipse cx="670" cy="84" rx="34" ry="16" fill="#FFF6E4"/>
+      <path d="M70 250c40-30 70-18 100 0" fill="none" stroke="#FFF6E4" stroke-width="8" stroke-linecap="round"/>
+      <path d="M1080 210c30-22 58-12 84 4" fill="none" stroke="#FFF6E4" stroke-width="7" stroke-linecap="round"/>
+      <polygon points="90,168 96,184 114,186 100,198 104,216 90,206 76,216 80,198 66,186 84,184" fill="#FFB703"/>
+      <polygon points="400,150 404,162 418,163 408,172 411,186 400,178 389,186 392,172 382,163 396,162" fill="#FF4FA3"/>
+      <polygon points="1120,300 1125,312 1138,313 1128,322 1131,335 1120,327 1109,335 1112,322 1102,313 1115,312" fill="#FFB703"/>
+      <rect y="430" width="1200" height="200" fill="url(#water)"/>
+      <path d="M0 450c80 24 140-10 220 8s150 18 230-4 160-20 240 6 150 16 230-6 160-8 280 10v166H0Z" fill="#2F6BFF" opacity="0.35"/>
+      <ellipse cx="250" cy="520" rx="230" ry="78" fill="#1C8A42"/>
+      <ellipse cx="250" cy="492" rx="210" ry="64" fill="url(#isle)"/>
+      <rect x="214" y="400" width="18" height="46" rx="4" fill="#C47A3A"/>
+      <circle cx="200" cy="392" r="28" fill="#2EAF55"/>
+      <circle cx="232" cy="378" r="34" fill="#3DDC6E"/>
+      <circle cx="262" cy="396" r="24" fill="#2EAF55"/>
+      <path d="M300 470c8 28 4 52 12 78" fill="none" stroke="#FFF6E4" stroke-width="7" stroke-linecap="round"/>
+      <path d="M314 478c6 24 2 46 8 70" fill="none" stroke="#7ED0FF" stroke-width="4" stroke-linecap="round"/>
+      <g transform="translate(150 360)">
+        <rect x="18" y="46" width="84" height="62" rx="6" fill="#FFF6E4"/>
+        <polygon points="10,48 60,12 110,48" fill="#FF4FA3"/>
+        <rect x="46" y="8" width="22" height="40" fill="#FFF6E4"/>
+        <polygon points="42,10 57,-8 72,10" fill="#FFB703"/>
+        <rect x="34" y="68" width="16" height="28" rx="2" fill="#2F6BFF"/>
+        <rect x="70" y="62" width="14" height="16" rx="2" fill="#7ED0FF"/>
+      </g>
+      <ellipse cx="860" cy="545" rx="150" ry="46" fill="#1C8A42"/>
+      <ellipse cx="860" cy="528" rx="136" ry="36" fill="#3DDC6E"/>
+      <circle cx="820" cy="500" r="20" fill="#2EAF55"/>
+      <circle cx="900" cy="494" r="26" fill="#3DDC6E"/>
+      <circle cx="780" cy="548" r="7" fill="#FF4FA3"/>
+      <circle cx="808" cy="556" r="5" fill="#FFB703"/>
+      <circle cx="300" cy="545" r="6" fill="#FF4FA3"/>
+      <circle cx="328" cy="552" r="5" fill="#FFF6E4"/>
+      <circle cx="180" cy="540" r="5" fill="#FFB703"/>
+    </svg>
+    <div class="medallion"><img src="file:///workspace/public/faliz/icon.png" alt=""></div>
+    <div class="lockup" id="lockup">
+      <div class="line1" id="l1">FALIZ</div>
+      <div class="line2" id="l2">KIDS WORLD</div>
+      <div class="tag" id="tag">PLAY • EXPLORE • LEARN • CREATE</div>
+    </div>
+  </div>
+</body>
+</html>

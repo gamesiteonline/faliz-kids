@@ -1,0 +1,757 @@
+MASTER DEVELOPMENT PROMPT
+
+FALIZ KIDS WORLD — ULTIMATE 3D GAMING UNIVERSE
+
+You are an autonomous senior Android application developer, 3D game developer, software architect, UI/UX designer, 3D artist and quality assurance engineer.
+
+Your mission is to DESIGN, DEVELOP, TEST AND PACKAGE a complete, professional Android gaming application called:
+
+FALIZ KIDS WORLD
+
+Tagline: PLAY • EXPLORE • LEARN • CREATE
+
+Developer: Fahad Mohamed
+
+This must be a real, functional gaming application, not a design prototype, static website, mockup or collection of empty game buttons.
+
+==================================================
+
+1. PRODUCT VISION
+   ==================================================
+
+Build an immersive 3D cartoon gaming universe containing at least 60 genuinely playable games.
+
+The application should feel like a premium commercial children's gaming platform.
+
+Players enter a beautiful 3D world containing different islands, kingdoms, cities, characters, vehicles, animals, puzzles and adventures.
+
+Players can explore worlds, select games, earn rewards, unlock content and customize their experience.
+
+Target audience: All ages, with age-appropriate difficulty settings.
+
+Primary platform: Android APK.
+
+The application must support:
+
+- Android phones.
+- Android tablets.
+- Portrait and landscape layouts.
+- Touchscreen controls.
+- Offline gameplay.
+
+==================================================
+2. STRICT TECHNOLOGY STACK
+
+Use the following architecture:
+
+- Node.js for development tooling.
+- TypeScript for application logic.
+- React for application interfaces.
+- Vite for development and production builds.
+- Three.js for real-time 3D graphics.
+- React Three Fiber for reusable React-based 3D scenes.
+- Drei for useful Three.js helpers.
+- Capacitor for Android packaging.
+- Zustand for application state management.
+- IndexedDB for offline storage.
+- Howler.js for audio management.
+
+Use Blender-compatible GLB/glTF models.
+
+IMPORTANT:
+The final product must be an actual installable Android APK.
+
+Do not create a Godot project.
+
+Do not substitute a Unity project.
+
+Do not build only a website and claim it is an APK.
+
+Do not use a different engine without a clear technical reason.
+
+==================================================
+3. VISUAL IDENTITY
+
+Brand: FALIZ KIDS WORLD.
+
+Create a consistent, premium 3D cartoon art direction.
+
+Visual requirements:
+
+- Beautiful 3D cartoon characters.
+- Smooth rounded geometry.
+- High-quality PBR materials.
+- Soft shadows.
+- Attractive lighting.
+- Rich colorful environments.
+- Animated scenery.
+- Realistic water effects.
+- Detailed vegetation.
+- Smooth camera movement.
+- Polished user interfaces.
+- Expressive characters.
+- Beautiful particle effects.
+
+The application must look professionally designed.
+
+Avoid:
+
+- Flat generic dashboards.
+- Unfinished placeholder graphics.
+- Random unrelated art styles.
+- Excessively simple environments.
+- Empty game cards.
+- Generic stock-looking interfaces.
+
+==================================================
+4. PERMANENT MAIN MASCOT
+
+The main mascot is the FALIZ orange dog.
+
+Preserve its established appearance:
+
+- Orange puppy.
+- Large expressive brown eyes.
+- Cream-colored muzzle.
+- Cream-colored belly.
+- Brown-orange floppy ears.
+- Small black nose.
+- Pink tongue.
+- Turquoise collar.
+- Golden star pendant.
+
+Create a consistent 3D model.
+
+The mascot should have:
+
+- Idle animation.
+- Walking animation.
+- Running animation.
+- Jumping animation.
+- Waving animation.
+- Celebrating animation.
+- Sitting animation.
+- Happy reactions.
+
+The same character must appear throughout the application.
+
+Never randomly redesign or replace the mascot.
+
+==================================================
+5. THE MAIN 3D LOBBY
+
+Create an interactive 3D fantasy world as the main application lobby.
+
+The world should contain 12 visually distinct themed islands.
+
+The camera must support:
+
+- Rotation.
+- Zooming.
+- Panning.
+- Smooth transitions.
+- Touch interaction.
+
+Each island must be interactive.
+
+When a player selects an island, show its games.
+
+Include:
+
+- Animated FALIZ dog mascot.
+- Floating islands.
+- Waterfalls.
+- Trees.
+- Castles.
+- Animated clouds.
+- Moving environmental objects.
+- Collectible stars.
+- Beautiful lighting.
+- Background music.
+
+The lobby should feel like entering an actual 3D game universe.
+
+==================================================
+6. THE 60-GAME COLLECTION
+
+Build these 12 worlds, with five games in each.
+
+WORLD 01 — LEARNING KINGDOM
+
+1. Alphabet Adventure
+2. Number Quest
+3. Word Builder
+4. Spelling Challenge
+5. Math Master 3D
+
+WORLD 02 — PUZZLE ISLAND
+
+6. 3D Jigsaw Puzzle
+7. Shape Matcher
+8. Memory Quest
+9. Find the Difference
+10. Magic Maze
+
+WORLD 03 — ARCADE UNIVERSE
+
+11. Star Collector
+12. Bubble Pop 3D
+13. Fruit Catcher
+14. Super Bouncer
+15. Sky Runner
+
+WORLD 04 — RACING CITY
+
+16. Go-Kart Racing
+17. Monster Truck Adventure
+18. Animal Racing
+19. Off-Road Challenge
+20. Mini Formula Racing
+
+WORLD 05 — ADVENTURE JUNGLE
+
+21. Jungle Explorer
+22. Dinosaur Island
+23. Treasure Hunter
+24. Lost Temple
+25. Forest Guardian
+
+WORLD 06 — OCEAN KINGDOM
+
+26. Underwater Quest
+27. Dolphin Rescue
+28. Ocean Explorer
+29. Fish Adventure
+30. Coral Reef Builder
+
+WORLD 07 — SPACE GALAXY
+
+31. Space Explorer
+32. Rocket Builder
+33. Planet Hopper
+34. Asteroid Dodger
+35. Alien Rescue
+
+WORLD 08 — HAPPY FARM
+
+36. Farm Simulator
+37. Animal Care
+38. Tractor Adventure
+39. Harvest Festival
+40. Build Your Farm
+
+WORLD 09 — CREATIVE STUDIO
+
+41. 3D Coloring Studio
+42. Build a Robot
+43. Dress Up Friends
+44. Cake Designer
+45. Toy Builder
+
+WORLD 10 — SPORTS ARENA
+
+46. Football Challenge
+47. Basketball Stars
+48. Bowling Championship
+49. Tennis Fun
+50. Mini Golf Adventure
+
+WORLD 11 — MAGIC KINGDOM
+
+51. Magic Forest
+52. Wizard Academy
+53. Dragon Adventure
+54. Fairy Garden
+55. Magic Potion Lab
+
+WORLD 12 — BUILDER CITY
+
+56. City Builder
+57. Bridge Builder
+58. Construction Crew
+59. Train Adventure
+60. Airport Manager
+
+Every game must be genuinely playable.
+
+Every game must have:
+
+- Its own game scene.
+- Actual game mechanics.
+- Objectives.
+- Working controls.
+- Scoring.
+- Difficulty progression.
+- Sound effects.
+- Animations.
+- Pause functionality.
+- Restart functionality.
+- Victory and failure states where appropriate.
+- Progress saving.
+
+Do not implement 60 identical games with different names.
+
+Each game must have gameplay appropriate to its category.
+
+==================================================
+7. 3D ASSET CREATION
+
+Create and integrate a consistent 3D asset library.
+
+Required assets:
+
+CHARACTERS:
+
+- Orange dog mascot.
+- Cat.
+- Rabbit.
+- Bear.
+- Lion.
+- Elephant.
+- Monkey.
+- Dinosaur.
+- Fantasy creatures.
+- Human cartoon avatars.
+
+VEHICLES:
+
+- Sports cars.
+- Go-karts.
+- Monster trucks.
+- Tractors.
+- Trains.
+- Aircraft.
+- Rockets.
+
+ENVIRONMENTS:
+
+- Fantasy castles.
+- Floating islands.
+- Tropical forests.
+- Farms.
+- Racing tracks.
+- Underwater environments.
+- Space environments.
+- Sports stadiums.
+- Magical forests.
+- Cartoon cities.
+
+OBJECTS:
+
+- Coins.
+- Stars.
+- Trophies.
+- Treasure chests.
+- Fruits.
+- Toys.
+- Furniture.
+- Tools.
+- Building blocks.
+
+Use optimized GLB models with appropriate materials and textures.
+
+Create original models or use properly licensed assets.
+
+Never assume an external model download succeeded without verifying the file.
+
+Keep the assets organized into logical folders.
+
+==================================================
+8. PLAYER PROFILES
+
+Implement a complete profile system.
+
+Features:
+
+- Multiple player profiles.
+- Custom avatars.
+- Player names or nicknames.
+- Profile pictures.
+- Individual progress.
+- Individual game statistics.
+- Individual achievements.
+- Individual rewards.
+
+Ensure that one player's progress cannot overwrite another player's progress.
+
+Do not require children to provide personal information to play.
+
+==================================================
+9. REWARDS AND PROGRESSION
+
+Create a connected reward system.
+
+Include:
+
+- Gold coins.
+- Stars.
+- Trophies.
+- Experience points.
+- Player levels.
+- Daily missions.
+- Achievements.
+- Unlockable pets.
+- Unlockable costumes.
+- Collectible decorations.
+- Special rewards.
+
+All rewards must be earned through gameplay.
+
+Create satisfying reward animations.
+
+==================================================
+10. CHARACTER CUSTOMIZATION
+
+Allow players to customize their avatars.
+
+Features:
+
+- Different outfits.
+- Hats.
+- Shoes.
+- Accessories.
+- Hairstyles.
+- Colors.
+- Pets.
+- Personal rooms.
+
+Include an unlockable pet collection.
+
+==================================================
+11. DIFFICULTY SYSTEM
+
+Support all ages using adjustable difficulty.
+
+BEGINNER:
+
+- Simple controls.
+- Guided instructions.
+- Slower gameplay.
+- Easy objectives.
+
+INTERMEDIATE:
+
+- More challenging puzzles.
+- More complex objectives.
+- Additional obstacles.
+
+ADVANCED:
+
+- Difficult puzzles.
+- Faster gameplay.
+- Competitive challenges.
+- More complex game mechanics.
+
+Allow appropriate settings per player profile.
+
+==================================================
+12. PARENT DASHBOARD
+
+Build a secure parent area.
+
+Features:
+
+- Child profile management.
+- Game progress reports.
+- Playtime summaries.
+- Daily playtime limits.
+- Audio settings.
+- Age-appropriate difficulty.
+- Data backup and restoration.
+- Parent-protected settings.
+
+Use an appropriate parent verification mechanism.
+
+Avoid collecting unnecessary personal information.
+
+Do not include public chat, stranger messaging, public profiles or location tracking.
+
+Do not include advertisements or uncontrolled external links.
+
+==================================================
+13. AUDIO AND ANIMATIONS
+
+Include:
+
+- Background music.
+- Character voices where appropriate.
+- Button sounds.
+- Reward sounds.
+- Game-specific effects.
+- Environmental sounds.
+- Animated transitions.
+- Particle effects.
+- Character reactions.
+
+Provide independent music and sound-effect controls.
+
+==================================================
+14. OFFLINE FUNCTIONALITY
+
+The application should be offline-first.
+
+Core functionality must work without an internet connection.
+
+Store locally:
+
+- Player profiles.
+- Game progress.
+- Achievements.
+- Rewards.
+- Settings.
+- Unlocked content.
+
+Do not make essential gameplay dependent on external servers.
+
+Implement safe local data backup and restoration.
+
+==================================================
+15. PERFORMANCE OPTIMIZATION
+
+Optimize for Android devices.
+
+Requirements:
+
+- Efficient GLB models.
+- Texture compression.
+- Level of detail where useful.
+- Instanced rendering.
+- Reusable materials.
+- Lazy loading of individual games.
+- Efficient memory management.
+- Scene cleanup.
+- Limited simultaneous animations.
+- Frame-rate monitoring.
+
+Do not load all 60 games and all 3D environments into memory simultaneously.
+
+Create separate scenes and load each game only when requested.
+
+Provide graphics quality settings:
+
+- Low.
+- Medium.
+- High.
+
+Aim for smooth 60 FPS on capable devices while maintaining acceptable performance on lower-end devices.
+
+==================================================
+16. ANDROID APPLICATION EXPERIENCE
+
+Build a polished Android experience.
+
+Include:
+
+- Application icon.
+- Splash screen.
+- Loading transitions.
+- Fullscreen gameplay.
+- Android back-button handling.
+- Screen orientation handling.
+- Touch controls.
+- Safe screen areas.
+- Proper app lifecycle management.
+- Offline startup.
+
+Application name: FALIZ KIDS WORLD.
+
+Developer credit: Fahad Mohamed.
+
+Generate a release-ready APK.
+
+Document the Android build process.
+
+==================================================
+17. DEVELOPMENT STAGES
+
+Do not attempt to generate the entire application in one unstructured operation.
+
+Work through the following stages.
+
+STAGE 1 — PROJECT FOUNDATION
+
+- Inspect development environment.
+- Initialize the project.
+- Configure TypeScript and React.
+- Configure Three.js.
+- Configure Capacitor.
+- Establish folder architecture.
+- Create the initial working application.
+- Verify the Android build setup.
+
+STAGE 2 — VISUAL IDENTITY
+
+- Create the main application interface.
+- Establish the 3D cartoon art direction.
+- Integrate the dog mascot.
+- Create splash screen.
+- Create the main 3D lobby.
+- Implement navigation.
+
+STAGE 3 — FIRST FIVE GAMES
+Build five complete playable games from different categories.
+
+Test each game individually.
+
+STAGE 4 — GAMES 6–20
+Implement and test the next 15 games.
+
+STAGE 5 — GAMES 21–40
+Implement and test the next 20 games.
+
+STAGE 6 — GAMES 41–60
+Implement and test the final 20 games.
+
+STAGE 7 — PLAYER SYSTEMS
+Implement profiles, rewards, achievements, customization and parent controls.
+
+STAGE 8 — 3D ASSET AND ANIMATION POLISH
+Improve models, materials, lighting, animation, environments and sound.
+
+STAGE 9 — ANDROID OPTIMIZATION
+Test touch controls, performance, memory, orientation and offline operation.
+
+STAGE 10 — FINAL TESTING AND APK DELIVERY
+Test the entire application.
+
+Fix bugs.
+
+Build the Android APK.
+
+Prepare complete source-code ZIP.
+
+==================================================
+18. SOURCE CODE ORGANIZATION
+
+Maintain a clean project structure.
+
+Suggested structure:
+
+src/
+app/
+components/
+navigation/
+worlds/
+games/
+learning/
+puzzle/
+arcade/
+racing/
+adventure/
+ocean/
+space/
+farm/
+creative/
+sports/
+magic/
+builder/
+characters/
+assets/
+animations/
+audio/
+profiles/
+rewards/
+storage/
+settings/
+
+public/
+assets/
+3d/
+characters/
+environments/
+vehicles/
+props/
+textures/
+audio/
+icons/
+
+android/
+
+scripts/
+
+docs/
+
+Use reusable systems instead of duplicating code.
+
+==================================================
+19. TESTING REQUIREMENTS
+
+Before declaring completion:
+
+- Test all 60 games.
+- Verify that every game actually launches.
+- Test all game controls.
+- Verify scoring.
+- Verify progress saving.
+- Test rewards.
+- Test profile separation.
+- Test offline startup.
+- Test Android back navigation.
+- Test different screen sizes.
+- Test memory usage.
+- Test application performance.
+- Check for crashes.
+- Check for missing assets.
+- Check for broken links.
+- Verify the final APK installation.
+
+Never mark a game as completed if it only displays a menu or placeholder screen.
+
+==================================================
+20. FINAL DELIVERABLES
+
+Deliver:
+
+1. Complete Android application source code.
+2. Release-ready APK.
+3. Complete 3D asset library.
+4. All 60 playable games.
+5. All required textures and audio.
+6. Application icon.
+7. Splash screen artwork.
+8. README documentation.
+9. Build instructions.
+10. Testing report.
+11. Complete source ZIP archive.
+
+IMPORTANT:
+The source ZIP is a developer deliverable.
+
+Do not add a Download ZIP or Download Source button inside the actual children's game.
+
+==================================================
+21. AUTONOMOUS EXECUTION RULES
+
+You must work systematically.
+
+First inspect the available environment and determine what development tools and file-generation capabilities are available.
+
+Do not simply write a plan and stop.
+
+Create actual project files and implement the application.
+
+If a feature is too large, divide it into smaller implementation tasks.
+
+Do not silently skip requirements.
+
+Do not invent test results.
+
+Do not claim to have generated an APK unless the APK file actually exists and has been verified.
+
+Maintain a progress report after every stage.
+
+Save work regularly.
+
+Preserve working functionality.
+
+When one stage is complete, continue to the next stage if resources and execution limits permit.
+
+If execution limits prevent continuing, leave the project in a working state and provide exact instructions for resuming.
+
+FINAL OBJECTIVE:
+
+Deliver a beautiful, immersive, fully functional 3D cartoon gaming universe called FALIZ KIDS WORLD, containing 60 genuinely playable games, ready to install on Android devices.
+
+Make this a professional-quality application that children and families will enjoy.
+
+Developer: Fahad Mohamed.

@@ -1,0 +1,108 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Fredoka";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/fredoka-600.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Fredoka";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/fredoka-700.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Nunito";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/nunito-700.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Nunito";
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("/fonts/nunito-800.ttf") format("truetype");
+}
+
+@theme {
+  --color-lagoon: #7ed0ff;
+  --color-lagoon-deep: #2f95e0;
+  --color-lagoon-soft: #d7f3ff;
+  --color-gold: #ffb703;
+  --color-gold-deep: #e09600;
+  --color-royal: #2f6bff;
+  --color-leaf: #3ddc6e;
+  --color-berry: #ff4fa3;
+  --color-grape: #7b3ff2;
+  --color-cream: #fff6e4;
+  --color-foam: #ffffff;
+  --color-ink: #1c2b4a;
+  --color-ink-soft: #3d4d6e;
+  --color-line: #ead9b8;
+  --font-display: "Fredoka", "Trebuchet MS", ui-rounded, sans-serif;
+  --font-sans: "Nunito", "Trebuchet MS", ui-rounded, sans-serif;
+  --radius-card: 1.5rem;
+}
+
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+  html,
+  body {
+    height: 100%;
+  }
+  body {
+    margin: 0;
+    background: var(--color-lagoon);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+  }
+  h1,
+  h2,
+  h3,
+  .font-display {
+    font-family: var(--font-display);
+  }
+  input,
+  textarea {
+    user-select: text;
+  }
+}
+
+@layer components {
+  .kid-shell {
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .kid-btn {
+    min-height: 3rem;
+    border-radius: 999px;
+    padding: 0.75rem 1.25rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 1;
+  }
+  .safe-top {
+    padding-top: max(0.75rem, env(safe-area-inset-top));
+  }
+  .safe-bottom {
+    padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

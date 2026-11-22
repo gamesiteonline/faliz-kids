@@ -1,0 +1,36 @@
+{
+  "url": "http://127.0.0.1:8080/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "FALIZ KIDS WORLD",
+      "hasCanvas": false,
+      "bodyTextLen": 105,
+      "bodyTextHash": "9991e6d138b4783919cd19a152e58fc86ff0459cd2b1727754e72d136ae20941",
+      "bodyTextPrefix": "Faliz Kids World Play · Learn · Explore · Create Enter the world",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "FALIZ KIDS WORLD",
+      "hasCanvas": false,
+      "bodyTextLen": 105,
+      "bodyTextHash": "9991e6d138b4783919cd19a152e58fc86ff0459cd2b1727754e72d136ae20941",
+      "bodyTextPrefix": "Faliz Kids World Play · Learn · Explore · Create Enter the world",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-preview.json"
+}

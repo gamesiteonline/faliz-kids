@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face {
+    font-family: Fredoka;
+    src: url("file:///workspace/public/fonts/fredoka-700.ttf") format("truetype");
+    font-weight: 700;
+  }
+  @font-face {
+    font-family: Nunito;
+    src: url("file:///workspace/public/fonts/nunito-800.ttf") format("truetype");
+    font-weight: 800;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1200px; height: 264px; overflow: hidden; background: #7ED0FF; }
+  .stage { position: relative; width: 1200px; height: 264px; overflow: hidden; }
+  svg.world { position: absolute; inset: 0; width: 1200px; height: 264px; }
+  .medallion {
+    position: absolute;
+    right: 36px;
+    top: 18px;
+    width: 228px;
+    height: 228px;
+    border-radius: 50%;
+    border: 8px solid #FFB703;
+    outline: 5px solid #FFF6E4;
+    box-shadow: 0 8px 0 #1C2B4A;
+    overflow: hidden;
+    background: #FFF6E4;
+    z-index: 1;
+  }
+  .medallion img { width: 100%; height: 100%; object-fit: cover; object-position: center 40%; }
+  .lockup {
+    position: absolute;
+    left: 48px;
+    top: 18px;
+    z-index: 3;
+    text-align: left;
+    width: max-content;
+    background: rgba(255, 246, 228, 0.94);
+    border: 4px solid #FFB703;
+    border-radius: 26px;
+    padding: 8px 18px 8px;
+    box-shadow: 0 6px 0 #1C2B4A;
+  }
+  .line1, .line2 {
+    font-family: Fredoka, sans-serif;
+    font-weight: 700;
+    color: #FFB703;
+    -webkit-text-stroke: 5px #1C2B4A;
+    paint-order: stroke fill;
+    line-height: 0.88;
+    display: block;
+    width: fit-content;
+  }
+  .line1 { font-size: 52px; }
+  .line2 { font-size: 28px; margin-top: 1px; color: #FFB703; }
+  .tag {
+    margin-top: 4px;
+    font-family: Nunito, sans-serif;
+    font-weight: 800;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    color: #1C2B4A;
+    display: block;
+    width: fit-content;
+  }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <svg class="world" viewBox="0 0 1200 264" aria-hidden="true">
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#7ED0FF"/>
+          <stop offset="0.7" stop-color="#D7F3FF"/>
+          <stop offset="1" stop-color="#FFF6E4"/>
+        </linearGradient>
+        <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#7ED0FF"/>
+          <stop offset="1" stop-color="#2F6BFF"/>
+        </linearGradient>
+      </defs>
+      <rect width="1200" height="264" fill="url(#sky)"/>
+      <circle cx="1040" cy="48" r="36" fill="#FFB703"/>
+      <circle cx="1040" cy="48" r="54" fill="#FFB703" opacity="0.25"/>
+      <ellipse cx="360" cy="46" rx="48" ry="16" fill="#FFF6E4"/>
+      <ellipse cx="400" cy="50" rx="28" ry="12" fill="#FFF6E4"/>
+      <ellipse cx="700" cy="36" rx="40" ry="14" fill="#FFF6E4"/>
+      <polygon points="520,28 524,38 536,39 527,47 530,58 520,52 510,58 513,47 504,39 516,38" fill="#FFB703"/>
+      <rect y="196" width="1200" height="68" fill="url(#water)"/>
+      <ellipse cx="180" cy="214" rx="120" ry="28" fill="#1C8A42"/>
+      <ellipse cx="180" cy="204" rx="108" ry="22" fill="#3DDC6E"/>
+      <circle cx="140" cy="190" r="16" fill="#2EAF55"/>
+      <circle cx="210" cy="186" r="20" fill="#3DDC6E"/>
+      <g transform="translate(250 150) scale(0.72)">
+        <rect x="18" y="46" width="84" height="62" rx="6" fill="#FFF6E4"/>
+        <polygon points="10,48 60,12 110,48" fill="#FF4FA3"/>
+        <rect x="46" y="8" width="22" height="40" fill="#FFF6E4"/>
+        <polygon points="42,10 57,-8 72,10" fill="#FFB703"/>
+      </g>
+      <ellipse cx="760" cy="228" rx="90" ry="22" fill="#2EAF55"/>
+      <ellipse cx="760" cy="220" rx="80" ry="16" fill="#3DDC6E"/>
+      <circle cx="740" cy="236" r="5" fill="#FF4FA3"/>
+      <circle cx="790" cy="238" r="4" fill="#FFB703"/>
+    </svg>
+    <div class="medallion"><img src="file:///workspace/public/faliz/icon.png" alt=""></div>
+    <div class="lockup" id="lockup">
+      <div class="line1">FALIZ</div>
+      <div class="line2">KIDS WORLD</div>
+      <div class="tag">PLAY • EXPLORE • LEARN • CREATE</div>
+    </div>
+  </div>
+</body>
+</html>
