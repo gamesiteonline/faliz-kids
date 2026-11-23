@@ -19,6 +19,8 @@ export function GameStage({ gameId, difficulty, quality, onExit, onDone }: Props
   const info = findGame(gameId);
   const [hud, setHud] = useState({ score: 0, lives: 3, progress: 0, goal: info?.howTo ?? "" });
   const [phase, setPhase] = useState<"how" | "play" | "pause">("how");
+  const [round, setRound] = useState(1);
+  const [breath, setBreath] = useState(false);
   const phaseRef = useRef(phase);
   phaseRef.current = phase;
   const controls = info?.controls ?? "tap";
@@ -43,6 +45,9 @@ export function GameStage({ gameId, difficulty, quality, onExit, onDone }: Props
     let justDown = false;
     let justUp = false;
     let stopped = false;
+    let round = 1;
+    let bank = 0;
+    let holdUntil = 0;
 
     const resize = () => {
       const rect = wrap.getBoundingClientRect();
@@ -110,24 +115,41 @@ export function GameStage({ gameId, difficulty, quality, onExit, onDone }: Props
       if (stopped) return;
       stopped = true;
       cancelAnimationFrame(raf);
-      onDone({ score: sim.score(), win });
+      onDone({ score: bank + sim.score(), win });
     };
 
     const loop = (now: number) => {
       const dt = Math.min(0.1, (now - last) / 1000);
       last = now;
-      if (phaseRef.current === "play" && !stopped) {
+      const between = now < holdUntil;
+      if (between) setBreath(true);
+      else if (holdUntil !== 0 && now >= holdUntil) setBreath(false);
+      if (phaseRef.current === "play" && !stopped && !between) {
         compose();
         sim.step(dt, input);
         for (const fx of sim.pullFx()) playFx(fx);
-        const next = { score: sim.score(), lives: sim.hud().lives, progress: sim.hud().progress, goal: sim.goalText() };
+        const live = sim.hud();
+        const next = {
+          score: bank + sim.score(),
+          lives: live.lives,
+          progress: Math.min(1, (round - 1 + live.progress) / 3),
+          goal: `Round ${round} of 3 · ${sim.goalText()}`,
+        };
         setHud((prev) =>
           prev.score === next.score && prev.lives === next.lives && prev.goal === next.goal && Math.abs(prev.progress - next.progress) < 0.02
             ? prev
             : next,
         );
-        if (sim.phase() === "win") finish(true);
-        else if (sim.phase() === "lose") finish(false);
+        if (sim.phase() === "win") {
+          if (round < 3) {
+            bank += sim.score();
+            round += 1;
+            setRound(round);
+            sim.reset(difficulty);
+            holdUntil = now + 1400;
+            setBreath(true);
+          } else finish(true);
+        } else if (sim.phase() === "lose") finish(false);
       }
       ctx.clearRect(0, 0, sim.w, sim.h);
       sim.render(ctx);
@@ -170,6 +192,11 @@ export function GameStage({ gameId, difficulty, quality, onExit, onDone }: Props
       stick,
       restart() {
         resize();
+        bank = 0;
+        round = 1;
+        holdUntil = 0;
+        setRound(1);
+        setBreath(false);
         sim.reset(difficulty);
         stopped = false;
         setPhase("play");
@@ -219,33 +246,40 @@ export function GameStage({ gameId, difficulty, quality, onExit, onDone }: Props
   });
 
   return (
-    <div className="flex h-dvh flex-col bg-ink text-cream">
+    <div className="flex h-dvh flex-col bg-lagoon text-ink">
       <header className="safe-top flex items-center gap-2 px-3 pb-2">
-        <button type="button" className="kid-btn bg-cream text-ink" onClick={onExit} aria-label="Back">
+        <button type="button" className="kid-btn bg-cream text-ink shadow-sm" onClick={onExit} aria-label="Back">
           <ChevronLeft className="size-5" />
         </button>
         <div className="min-w-0 flex-1">
-          <h1 className="truncate text-lg text-cream">{info?.name}</h1>
-          <p className="truncate text-sm text-lagoon-soft">{hud.goal}</p>
+          <h1 className="truncate font-display text-lg text-ink">{info?.name}</h1>
+          <p className="truncate text-sm text-ink-soft">{hud.goal}</p>
         </div>
-        <div className="text-right">
-          <p className="font-display text-xl text-gold">{hud.score}</p>
-          <p className="text-sm text-cream">{hud.lives} lives</p>
+        <div className="rounded-full bg-cream px-3 py-1 text-right">
+          <p className="font-display text-xl leading-none text-gold-deep">{hud.score}</p>
+          <p className="text-xs text-ink-soft">{hud.lives} lives</p>
         </div>
         <button type="button" className="kid-btn bg-royal text-cream" onClick={() => setPhase("pause")} aria-label="Pause">
           <Pause className="size-5" />
         </button>
       </header>
-      <div className="mx-3 h-2 overflow-hidden rounded-full bg-ink-soft">
-        <div className="h-full bg-gold" style={{ width: `${Math.round(hud.progress * 100)}%` }} />
+      <div className="mx-3 mb-2 flex items-center gap-2">
+        {[1, 2, 3].map((n) => (
+          <span key={n} className={`h-2 flex-1 rounded-full ${n < round ? "bg-gold" : n === round ? "bg-royal" : "bg-cream"}`} />
+        ))}
       </div>
-      <div ref={wrapRef} className="relative min-h-0 flex-1 touch-none">
+      <div ref={wrapRef} className="relative mx-2 min-h-0 flex-1 touch-none overflow-hidden rounded-3xl bg-ink">
         <canvas ref={canvasRef} className="h-full w-full touch-none" />
+        {breath && phase === "play" && (
+          <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+            <p className="rounded-full bg-cream px-6 py-3 font-display text-2xl text-ink shadow-sm">Round {round}</p>
+          </div>
+        )}
         {phase !== "play" && (
           <div className="absolute inset-0 flex items-center justify-center bg-ink/70 p-4">
             <div className="w-full max-w-md rounded-3xl bg-cream p-5 text-ink">
               <h2 className="text-2xl">{phase === "how" ? info?.name : "Paused"}</h2>
-              <p className="mt-2 text-base text-ink-soft">{info?.howTo}</p>
+              <p className="mt-2 text-base text-ink-soft">{info?.howTo} Clear the game three times in a row.</p>
               <div className="mt-4 flex flex-wrap gap-2">
                 <button
                   type="button"
@@ -275,10 +309,10 @@ export function GameStage({ gameId, difficulty, quality, onExit, onDone }: Props
         <div className="safe-bottom flex items-end justify-between gap-3 px-3 pt-2">
           {(controls === "steer" || controls === "steer-action") && (
             <div className="flex gap-2">
-              <button type="button" className="kid-btn bg-foam text-ink" aria-label="Left" {...bindHold("left")}>
+              <button type="button" className="kid-btn min-w-16 bg-foam text-ink" aria-label="Left" {...bindHold("left")}>
                 <ChevronLeft />
               </button>
-              <button type="button" className="kid-btn bg-foam text-ink" aria-label="Right" {...bindHold("right")}>
+              <button type="button" className="kid-btn min-w-16 bg-foam text-ink" aria-label="Right" {...bindHold("right")}>
                 <ChevronRight />
               </button>
             </div>
@@ -336,7 +370,7 @@ function Stick({ onChange }: { onChange: (x: number, y: number, on: boolean) => 
   return (
     <div
       ref={base}
-      className="relative h-28 w-28 touch-none rounded-full bg-foam/90"
+      className="relative h-32 w-32 touch-none rounded-full bg-cream shadow-sm"
       onPointerDown={move}
       onPointerMove={(e) => {
         if (e.buttons) move(e);

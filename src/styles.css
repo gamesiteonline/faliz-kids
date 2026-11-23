@@ -88,6 +88,11 @@
     font-family: var(--font-display);
     font-weight: 700;
     line-height: 1;
+    box-shadow: 0 3px 0 color-mix(in srgb, var(--color-ink) 18%, transparent);
+  }
+  .kid-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 color-mix(in srgb, var(--color-ink) 18%, transparent);
   }
   .safe-top {
     padding-top: max(0.75rem, env(safe-area-inset-top));

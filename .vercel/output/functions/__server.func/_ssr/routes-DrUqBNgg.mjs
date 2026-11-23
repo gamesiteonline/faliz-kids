@@ -2,7 +2,7 @@ import { i as __toESM } from "../_runtime.mjs";
 import { f as require_jsx_runtime, p as require_react } from "../_libs/@react-three/drei+[...].mjs";
 import { a as Star, c as Play, d as Crosshair, f as Coins, l as Pause, m as ChevronLeft, n as Volume2, o as Settings, p as ChevronRight, r as Trophy, s as RotateCcw, t as VolumeX, u as Lock } from "../_libs/lucide-react.mjs";
 import { t as create } from "../_libs/zustand.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-CJB_Wfue.js
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-DrUqBNgg.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var __defProp = Object.defineProperty;
@@ -593,81 +593,321 @@ function findWorld(id) {
 function needsChrome(mode) {
 	return mode !== "tap";
 }
+/** Original loops. Licensed catalogue tracks are not embedded. */
+var TUNES = {
+	sunny: {
+		bpm: 112,
+		name: "Sunny parade",
+		melody: [
+			523,
+			659,
+			784,
+			880,
+			784,
+			659,
+			587,
+			523,
+			587,
+			659,
+			784,
+			659,
+			880,
+			988,
+			880,
+			784,
+			659,
+			587,
+			659,
+			784,
+			880,
+			784,
+			659,
+			523,
+			392,
+			523,
+			659,
+			784,
+			659,
+			523,
+			587,
+			523
+		],
+		bass: [
+			131,
+			131,
+			165,
+			196,
+			165,
+			131,
+			147,
+			165
+		],
+		chord: [
+			262,
+			330,
+			392
+		]
+	},
+	voyage: {
+		bpm: 126,
+		name: "Star voyage",
+		melody: [
+			587,
+			698,
+			880,
+			784,
+			698,
+			587,
+			523,
+			587,
+			698,
+			880,
+			988,
+			880,
+			784,
+			698,
+			587,
+			523,
+			494,
+			587,
+			698,
+			880,
+			1047,
+			880,
+			784,
+			698,
+			587,
+			523,
+			587,
+			698,
+			784,
+			698,
+			587,
+			523
+		],
+		bass: [
+			147,
+			147,
+			196,
+			175,
+			147,
+			131,
+			117,
+			131
+		],
+		chord: [
+			294,
+			370,
+			440
+		]
+	},
+	island: {
+		bpm: 109,
+		name: "Island hop",
+		melody: [
+			392,
+			494,
+			587,
+			494,
+			659,
+			587,
+			494,
+			440,
+			392,
+			440,
+			494,
+			587,
+			659,
+			784,
+			659,
+			587,
+			494,
+			440,
+			392,
+			349,
+			392,
+			494,
+			587,
+			659,
+			587,
+			494,
+			440,
+			392,
+			440,
+			494,
+			392,
+			349
+		],
+		bass: [
+			98,
+			98,
+			131,
+			147,
+			131,
+			98,
+			87,
+			98
+		],
+		chord: [
+			196,
+			247,
+			294
+		]
+	}
+};
+var TUNE_LIST = Object.keys(TUNES).map((id) => ({
+	id,
+	name: TUNES[id].name
+}));
+function tuneFor(worldId) {
+	if (worldId === "ocean" || worldId === "farm" || worldId === "adventure" || worldId === "racing") return "island";
+	if (worldId === "space" || worldId === "magic" || worldId === "creative") return "voyage";
+	return "sunny";
+}
 var ctx = null;
+var musicGain = null;
+var sfxGain = null;
+var noise = null;
 var musicOn = true;
 var sfxOn = true;
 var timer$1 = null;
 var step = 0;
-var MELODY = [
-	523,
-	587,
-	659,
-	784,
-	659,
-	587,
-	523,
-	392,
-	440,
-	523,
-	659,
-	587
-];
+var nextAt = 0;
+var tuneId = "sunny";
 function context() {
-	if (!ctx) ctx = new AudioContext();
+	if (!ctx) {
+		const audio = new AudioContext();
+		ctx = audio;
+		const filter = audio.createBiquadFilter();
+		filter.type = "lowpass";
+		filter.frequency.value = 3200;
+		filter.connect(audio.destination);
+		musicGain = audio.createGain();
+		musicGain.gain.value = musicOn ? .7 : 0;
+		musicGain.connect(filter);
+		sfxGain = audio.createGain();
+		sfxGain.gain.value = .85;
+		sfxGain.connect(filter);
+		const len = Math.floor(audio.sampleRate * .2);
+		noise = audio.createBuffer(1, len, audio.sampleRate);
+		const data = noise.getChannelData(0);
+		for (let i = 0; i < len; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / len);
+	}
 	return ctx;
 }
-function tone(freq, dur, type, gain) {
-	if (!ctx) return;
+function tone(freq, dur, type, gain, when, bus) {
+	if (!ctx || !bus || freq <= 0) return;
 	const osc = ctx.createOscillator();
 	const amp = ctx.createGain();
 	osc.type = type;
 	osc.frequency.value = freq;
-	amp.gain.value = gain;
 	osc.connect(amp);
-	amp.connect(ctx.destination);
-	const now = ctx.currentTime;
-	amp.gain.setValueAtTime(gain, now);
-	amp.gain.exponentialRampToValueAtTime(1e-4, now + dur);
-	osc.start(now);
-	osc.stop(now + dur + .02);
+	amp.connect(bus);
+	amp.gain.setValueAtTime(1e-4, when);
+	amp.gain.exponentialRampToValueAtTime(Math.max(2e-4, gain), when + .03);
+	amp.gain.exponentialRampToValueAtTime(1e-4, when + dur);
+	osc.start(when);
+	osc.stop(when + dur + .04);
 }
-function loop() {
-	if (!musicOn || !ctx) {
+function kick(when) {
+	if (!ctx || !musicGain) return;
+	const osc = ctx.createOscillator();
+	const amp = ctx.createGain();
+	osc.type = "sine";
+	osc.frequency.setValueAtTime(150, when);
+	osc.frequency.exponentialRampToValueAtTime(52, when + .1);
+	osc.connect(amp);
+	amp.connect(musicGain);
+	amp.gain.setValueAtTime(.16, when);
+	amp.gain.exponentialRampToValueAtTime(1e-4, when + .16);
+	osc.start(when);
+	osc.stop(when + .18);
+}
+function drum(when, high) {
+	if (!ctx || !noise || !musicGain) return;
+	const src = ctx.createBufferSource();
+	src.buffer = noise;
+	const amp = ctx.createGain();
+	const band = ctx.createBiquadFilter();
+	band.type = high ? "highpass" : "bandpass";
+	band.frequency.value = high ? 5e3 : 1800;
+	src.connect(band);
+	band.connect(amp);
+	amp.connect(musicGain);
+	const dur = high ? .04 : .09;
+	amp.gain.setValueAtTime(high ? .03 : .05, when);
+	amp.gain.exponentialRampToValueAtTime(1e-4, when + dur);
+	src.start(when);
+	src.stop(when + dur + .02);
+}
+function schedule() {
+	if (!musicOn || !ctx || !musicGain) {
 		timer$1 = null;
 		return;
 	}
-	if (ctx.state === "running") {
-		tone(MELODY[step % MELODY.length], .2, "sine", .035);
+	const tune = TUNES[tuneId];
+	const eighth = 60 / tune.bpm / 2;
+	if (nextAt < ctx.currentTime) nextAt = ctx.currentTime + .06;
+	while (nextAt < ctx.currentTime + .35) {
+		const i = step;
+		const note = tune.melody[i % tune.melody.length];
+		tone(note, eighth * 1.5, "triangle", .05, nextAt, musicGain);
+		tone(note / 2, eighth * 1.6, "sine", .02, nextAt, musicGain);
+		if (i % 2 === 0) {
+			const bass = tune.bass[i / 2 % tune.bass.length];
+			tone(bass, eighth * 1.8, "triangle", .06, nextAt, musicGain);
+		}
+		if (i % 8 === 0) for (const freq of tune.chord) tone(freq, eighth * 7.2, "sine", .014, nextAt, musicGain);
+		if (i % 4 === 0) kick(nextAt);
+		if (i % 8 === 4) drum(nextAt, false);
+		if (i % 2 === 1) drum(nextAt, true);
 		step += 1;
+		nextAt += eighth;
 	}
-	timer$1 = setTimeout(loop, 320);
+	timer$1 = setTimeout(schedule, 90);
 }
 function unlockAudio() {
 	context().resume();
-	if (musicOn && timer$1 == null) loop();
+	if (musicOn && timer$1 == null) schedule();
 }
 function setMusic(on) {
 	musicOn = on;
+	if (musicGain && ctx) musicGain.gain.setTargetAtTime(on ? .7 : 1e-4, ctx.currentTime, .08);
 	if (!on && timer$1 != null) {
 		clearTimeout(timer$1);
 		timer$1 = null;
-	} else if (on && ctx && timer$1 == null) loop();
+	} else if (on && ctx && timer$1 == null) schedule();
 }
 function setSfx(on) {
 	sfxOn = on;
 }
+function setTune(id) {
+	if (tuneId === id) return;
+	tuneId = id;
+	step = 0;
+	nextAt = 0;
+}
 function playFx(kind) {
-	if (!sfxOn || !ctx || ctx.state !== "running") return;
-	if (kind === "coin") tone(880, .07, "square", .04);
-	else if (kind === "ok") tone(660, .09, "triangle", .05);
-	else if (kind === "bad") tone(196, .14, "sawtooth", .03);
-	else if (kind === "jump") tone(440, .06, "square", .035);
-	else if (kind === "win") {
-		tone(523, .12, "triangle", .05);
-		setTimeout(() => tone(659, .12, "triangle", .05), 110);
-		setTimeout(() => tone(784, .18, "triangle", .05), 220);
-	} else if (kind === "lose") tone(146, .28, "triangle", .04);
-	else tone(520, .05, "square", .03);
+	if (!sfxOn || !ctx || !sfxGain || ctx.state !== "running") return;
+	const now = ctx.currentTime;
+	if (kind === "coin") {
+		tone(880, .08, "square", .035, now, sfxGain);
+		tone(1175, .12, "sine", .03, now + .06, sfxGain);
+	} else if (kind === "ok") tone(660, .1, "triangle", .05, now, sfxGain);
+	else if (kind === "bad") {
+		tone(220, .12, "triangle", .04, now, sfxGain);
+		tone(160, .16, "sine", .03, now + .08, sfxGain);
+	} else if (kind === "jump") tone(520, .08, "square", .035, now, sfxGain);
+	else if (kind === "win") [
+		523,
+		659,
+		784,
+		1046
+	].forEach((freq, i) => tone(freq, .16, "triangle", .05, now + i * .1, sfxGain));
+	else if (kind === "lose") {
+		tone(196, .22, "triangle", .04, now, sfxGain);
+		tone(146, .32, "triangle", .035, now + .14, sfxGain);
+	} else tone(520, .05, "square", .028, now, sfxGain);
 }
 var DB = "faliz-kids-world";
 var STORE = "kv";
@@ -954,7 +1194,8 @@ var defaultSettings = {
 	music: true,
 	sfx: true,
 	quality: "medium",
-	pin: null
+	pin: null,
+	tune: "auto"
 };
 function mapActive(profiles, activeId, fn) {
 	return profiles.map((p) => p.id === activeId ? fn(rollDaily(p)) : p);
@@ -1483,7 +1724,7 @@ var Game = class {
 		this.diff = diff;
 		this.mode = "play";
 		this.points = 0;
-		this.lives = diff === "advanced" ? Math.max(1, lives - 1) : lives;
+		this.lives = diff === "beginner" ? lives + 2 : diff === "advanced" ? Math.max(2, lives) : lives + 1;
 		this.fx = [];
 		this.particles = [];
 		this.floaters = [];
@@ -1491,7 +1732,7 @@ var Game = class {
 		this.iframe = 0;
 		this.time = 0;
 		this.progress = 0;
-		this.rate = diff === "beginner" ? .78 : diff === "advanced" ? 1.25 : 1;
+		this.rate = diff === "beginner" ? .58 : diff === "advanced" ? .95 : .74;
 	}
 	addScore(n, x, y) {
 		if (this.mode !== "play") return;
@@ -6858,6 +7099,8 @@ function GameStage({ gameId, difficulty, quality, onExit, onDone }) {
 		goal: info?.howTo ?? ""
 	});
 	const [phase, setPhase] = (0, import_react.useState)("how");
+	const [round, setRound] = (0, import_react.useState)(1);
+	const [breath, setBreath] = (0, import_react.useState)(false);
 	const phaseRef = (0, import_react.useRef)(phase);
 	phaseRef.current = phase;
 	const controls = info?.controls ?? "tap";
@@ -6894,6 +7137,9 @@ function GameStage({ gameId, difficulty, quality, onExit, onDone }) {
 		let justDown = false;
 		let justUp = false;
 		let stopped = false;
+		let round = 1;
+		let bank = 0;
+		let holdUntil = 0;
 		const resize = () => {
 			const rect = wrap.getBoundingClientRect();
 			const dpr = quality === "low" ? 1 : quality === "high" ? Math.min(devicePixelRatio || 1, 2) : Math.min(devicePixelRatio || 1, 1.5);
@@ -6963,26 +7209,38 @@ function GameStage({ gameId, difficulty, quality, onExit, onDone }) {
 			stopped = true;
 			cancelAnimationFrame(raf);
 			onDone({
-				score: sim.score(),
+				score: bank + sim.score(),
 				win
 			});
 		};
 		const loop = (now) => {
 			const dt = Math.min(.1, (now - last) / 1e3);
 			last = now;
-			if (phaseRef.current === "play" && !stopped) {
+			const between = now < holdUntil;
+			if (between) setBreath(true);
+			else if (holdUntil !== 0 && now >= holdUntil) setBreath(false);
+			if (phaseRef.current === "play" && !stopped && !between) {
 				compose();
 				sim.step(dt, input);
 				for (const fx of sim.pullFx()) playFx(fx);
+				const live = sim.hud();
 				const next = {
-					score: sim.score(),
-					lives: sim.hud().lives,
-					progress: sim.hud().progress,
-					goal: sim.goalText()
+					score: bank + sim.score(),
+					lives: live.lives,
+					progress: Math.min(1, (round - 1 + live.progress) / 3),
+					goal: `Round ${round} of 3 · ${sim.goalText()}`
 				};
 				setHud((prev) => prev.score === next.score && prev.lives === next.lives && prev.goal === next.goal && Math.abs(prev.progress - next.progress) < .02 ? prev : next);
-				if (sim.phase() === "win") finish(true);
-				else if (sim.phase() === "lose") finish(false);
+				if (sim.phase() === "win") {
+					if (round < 3) {
+						bank += sim.score();
+						round += 1;
+						setRound(round);
+						sim.reset(difficulty);
+						holdUntil = now + 1400;
+						setBreath(true);
+					} else finish(true);
+				} else if (sim.phase() === "lose") finish(false);
 			}
 			ctx.clearRect(0, 0, sim.w, sim.h);
 			sim.render(ctx);
@@ -7023,6 +7281,11 @@ function GameStage({ gameId, difficulty, quality, onExit, onDone }) {
 			stick,
 			restart() {
 				resize();
+				bank = 0;
+				round = 1;
+				holdUntil = 0;
+				setRound(1);
+				setBreath(false);
 				sim.reset(difficulty);
 				stopped = false;
 				setPhase("play");
@@ -7060,14 +7323,14 @@ function GameStage({ gameId, difficulty, quality, onExit, onDone }) {
 		}
 	});
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "flex h-dvh flex-col bg-ink text-cream",
+		className: "flex h-dvh flex-col bg-lagoon text-ink",
 		children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
 				className: "safe-top flex items-center gap-2 px-3 pb-2",
 				children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
 						type: "button",
-						className: "kid-btn bg-cream text-ink",
+						className: "kid-btn bg-cream text-ink shadow-sm",
 						onClick: onExit,
 						"aria-label": "Back",
 						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronLeft, { className: "size-5" })
@@ -7075,20 +7338,20 @@ function GameStage({ gameId, difficulty, quality, onExit, onDone }) {
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 						className: "min-w-0 flex-1",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
-							className: "truncate text-lg text-cream",
+							className: "truncate font-display text-lg text-ink",
 							children: info?.name
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-							className: "truncate text-sm text-lagoon-soft",
+							className: "truncate text-sm text-ink-soft",
 							children: hud.goal
 						})]
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "text-right",
+						className: "rounded-full bg-cream px-3 py-1 text-right",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-							className: "font-display text-xl text-gold",
+							className: "font-display text-xl leading-none text-gold-deep",
 							children: hud.score
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-							className: "text-sm text-cream",
+							className: "text-xs text-ink-soft",
 							children: [hud.lives, " lives"]
 						})]
 					}),
@@ -7102,60 +7365,71 @@ function GameStage({ gameId, difficulty, quality, onExit, onDone }) {
 				]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-				className: "mx-3 h-2 overflow-hidden rounded-full bg-ink-soft",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-					className: "h-full bg-gold",
-					style: { width: `${Math.round(hud.progress * 100)}%` }
-				})
+				className: "mx-3 mb-2 flex items-center gap-2",
+				children: [
+					1,
+					2,
+					3
+				].map((n) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: `h-2 flex-1 rounded-full ${n < round ? "bg-gold" : n === round ? "bg-royal" : "bg-cream"}` }, n))
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				ref: wrapRef,
-				className: "relative min-h-0 flex-1 touch-none",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("canvas", {
-					ref: canvasRef,
-					className: "h-full w-full touch-none"
-				}), phase !== "play" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-					className: "absolute inset-0 flex items-center justify-center bg-ink/70 p-4",
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "w-full max-w-md rounded-3xl bg-cream p-5 text-ink",
-						children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
-								className: "text-2xl",
-								children: phase === "how" ? info?.name : "Paused"
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-								className: "mt-2 text-base text-ink-soft",
-								children: info?.howTo
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "mt-4 flex flex-wrap gap-2",
-								children: [
-									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-										type: "button",
-										className: "kid-btn bg-gold text-ink",
-										onClick: () => {
-											if (phase === "pause") stageApi.current?.restart();
-											setPhase("play");
-										},
-										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Play, { className: "mr-1 inline size-4" }), phase === "how" ? "Start" : "Restart"]
-									}),
-									phase === "pause" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-										type: "button",
-										className: "kid-btn bg-royal text-cream",
-										onClick: () => setPhase("play"),
-										children: "Resume"
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-										type: "button",
-										className: "kid-btn bg-foam text-ink",
-										onClick: onExit,
-										children: "Quit"
-									})
-								]
-							})
-						]
+				className: "relative mx-2 min-h-0 flex-1 touch-none overflow-hidden rounded-3xl bg-ink",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("canvas", {
+						ref: canvasRef,
+						className: "h-full w-full touch-none"
+					}),
+					breath && phase === "play" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "pointer-events-none absolute inset-0 flex items-center justify-center",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+							className: "rounded-full bg-cream px-6 py-3 font-display text-2xl text-ink shadow-sm",
+							children: ["Round ", round]
+						})
+					}),
+					phase !== "play" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "absolute inset-0 flex items-center justify-center bg-ink/70 p-4",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "w-full max-w-md rounded-3xl bg-cream p-5 text-ink",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
+									className: "text-2xl",
+									children: phase === "how" ? info?.name : "Paused"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+									className: "mt-2 text-base text-ink-soft",
+									children: [info?.howTo, " Clear the game three times in a row."]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "mt-4 flex flex-wrap gap-2",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+											type: "button",
+											className: "kid-btn bg-gold text-ink",
+											onClick: () => {
+												if (phase === "pause") stageApi.current?.restart();
+												setPhase("play");
+											},
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Play, { className: "mr-1 inline size-4" }), phase === "how" ? "Start" : "Restart"]
+										}),
+										phase === "pause" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+											type: "button",
+											className: "kid-btn bg-royal text-cream",
+											onClick: () => setPhase("play"),
+											children: "Resume"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+											type: "button",
+											className: "kid-btn bg-foam text-ink",
+											onClick: onExit,
+											children: "Quit"
+										})
+									]
+								})
+							]
+						})
 					})
-				})]
+				]
 			}),
 			needsChrome(controls) && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "safe-bottom flex items-end justify-between gap-3 px-3 pt-2",
@@ -7164,13 +7438,13 @@ function GameStage({ gameId, difficulty, quality, onExit, onDone }) {
 						className: "flex gap-2",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
 							type: "button",
-							className: "kid-btn bg-foam text-ink",
+							className: "kid-btn min-w-16 bg-foam text-ink",
 							"aria-label": "Left",
 							...bindHold("left"),
 							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronLeft, {})
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
 							type: "button",
-							className: "kid-btn bg-foam text-ink",
+							className: "kid-btn min-w-16 bg-foam text-ink",
 							"aria-label": "Right",
 							...bindHold("right"),
 							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronRight, {})
@@ -7234,7 +7508,7 @@ function Stick({ onChange }) {
 	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 		ref: base,
-		className: "relative h-28 w-28 touch-none rounded-full bg-foam/90",
+		className: "relative h-32 w-32 touch-none rounded-full bg-cream shadow-sm",
 		onPointerDown: move,
 		onPointerMove: (e) => {
 			if (e.buttons) move(e);
@@ -7249,7 +7523,7 @@ function Stick({ onChange }) {
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "absolute top-1/2 left-1/2 h-10 w-10 -translate-x-1/2 -translate-y-1/2 rounded-full bg-royal" })
 	});
 }
-var WorldLobby = (0, import_react.lazy)(() => import("./WorldLobby-CFxiQaQp.mjs").then((m) => ({ default: m.WorldLobby })));
+var WorldLobby = (0, import_react.lazy)(() => import("./WorldLobby-BvevRRVS.mjs").then((m) => ({ default: m.WorldLobby })));
 function FalizApp() {
 	const [screen, setScreen] = (0, import_react.useState)({ name: "splash" });
 	const [booted, setBooted] = (0, import_react.useState)(false);
@@ -7266,6 +7540,10 @@ function FalizApp() {
 		setMusic(settings.music);
 		setSfx(settings.sfx);
 	}, [settings.music, settings.sfx]);
+	(0, import_react.useEffect)(() => {
+		const worldId = screen.name === "world" ? screen.worldId : screen.name === "game" ? findGame(screen.gameId)?.worldId : "";
+		setTune(settings.tune === "auto" ? tuneFor(worldId ?? "") : settings.tune);
+	}, [screen, settings.tune]);
 	(0, import_react.useEffect)(() => {
 		if (!(screen.name === "lobby" || screen.name === "world" || screen.name === "game" || screen.name === "customize") || !profile) return;
 		const id = window.setInterval(() => useFaliz.getState().addPlaytime(1), 1e3);
@@ -7523,6 +7801,7 @@ function Lobby({ profile, quality, settingsOpen, onToggleSettings, onWorld, onCu
 	const patch = useFaliz((s) => s.patchSettings);
 	const music = useFaliz((s) => s.settings.music);
 	const sfx = useFaliz((s) => s.settings.sfx);
+	const tune = useFaliz((s) => s.settings.tune);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
 		className: "relative h-dvh",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
@@ -7601,9 +7880,9 @@ function Lobby({ profile, quality, settingsOpen, onToggleSettings, onWorld, onCu
 						})
 					]
 				}),
-				settingsOpen && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				settingsOpen && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "pointer-events-auto mx-3 rounded-3xl bg-cream p-3 text-sm",
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 						className: "flex flex-wrap gap-2",
 						children: [
 							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
@@ -7629,7 +7908,20 @@ function Lobby({ profile, quality, settingsOpen, onToggleSettings, onWorld, onCu
 								children: q
 							}, q))
 						]
-					})
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "mt-2 flex flex-wrap gap-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+							type: "button",
+							className: `kid-btn ${tune === "auto" ? "bg-royal text-cream" : "bg-foam"}`,
+							onClick: () => patch({ tune: "auto" }),
+							children: "Music follows the island"
+						}), TUNE_LIST.map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+							type: "button",
+							className: `kid-btn ${tune === item.id ? "bg-gold text-ink" : "bg-foam"}`,
+							onClick: () => patch({ tune: item.id }),
+							children: item.name
+						}, item.id))]
+					})]
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "flex-1" }),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -7754,7 +8046,7 @@ function WorldPage({ worldId, profile, onBack, onPlay }) {
 								type: "button",
 								className: "kid-btn mt-3 bg-royal text-cream",
 								onClick: () => onPlay(game.id),
-								children: "Play"
+								children: "Play 3 rounds"
 							})
 						]
 					}, game.id);
@@ -7775,7 +8067,7 @@ function Result({ screen, onAgain, onMap, onNext }) {
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
 				className: "text-4xl",
-				children: screen.win ? "You did it!" : "Nice try"
+				children: screen.win ? "All 3 rounds clear!" : "Nice try"
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 				className: "flex gap-1",

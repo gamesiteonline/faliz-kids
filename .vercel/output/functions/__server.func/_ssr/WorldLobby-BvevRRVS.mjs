@@ -1,7 +1,7 @@
 import { i as __toESM } from "../_runtime.mjs";
 import { a as useFrame, c as MeshToonMaterial, f as require_jsx_runtime, i as Canvas, l as NearestFilter, n as Html, p as require_react, s as CanvasTexture, t as OrbitControls, u as SRGBColorSpace } from "../_libs/@react-three/drei+[...].mjs";
-import { n as WORLDS } from "./routes-CJB_Wfue.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/WorldLobby-CFxiQaQp.js
+import { n as WORLDS } from "./routes-DrUqBNgg.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/WorldLobby-BvevRRVS.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var mats = /* @__PURE__ */ new Map();

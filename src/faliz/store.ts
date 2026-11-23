@@ -5,6 +5,7 @@ import { readRaw, writeRaw } from "./save";
 export type Diff = "beginner" | "intermediate" | "advanced";
 export type Animal = "dog" | "cat" | "rabbit" | "bear" | "lion";
 export type Quality = "low" | "medium" | "high";
+export type MusicPick = "auto" | "sunny" | "voyage" | "island";
 
 export type Stat = { plays: number; wins: number; best: number; bestStars: number };
 export type Mission = { id: string; label: string; target: number; progress: number };
@@ -39,6 +40,7 @@ export type Settings = {
   sfx: boolean;
   quality: Quality;
   pin: string | null;
+  tune: MusicPick;
 };
 
 export type Persisted = {
@@ -173,7 +175,7 @@ function rollDaily(p: Profile): Profile {
   return { ...p, dailyDate: today, missions: missionsFor(today) };
 }
 
-const defaultSettings: Settings = { music: true, sfx: true, quality: "medium", pin: null };
+const defaultSettings: Settings = { music: true, sfx: true, quality: "medium", pin: null, tune: "auto" };
 
 type Result = { coins: number; stars: number; achievements: string[]; levelUp: boolean };
 

@@ -65,7 +65,7 @@ export abstract class Game {
     this.diff = diff;
     this.mode = "play";
     this.points = 0;
-    this.lives = diff === "advanced" ? Math.max(1, lives - 1) : lives;
+    this.lives = diff === "beginner" ? lives + 2 : diff === "advanced" ? Math.max(2, lives) : lives + 1;
     this.fx = [];
     this.particles = [];
     this.floaters = [];
@@ -73,7 +73,7 @@ export abstract class Game {
     this.iframe = 0;
     this.time = 0;
     this.progress = 0;
-    this.rate = diff === "beginner" ? 0.78 : diff === "advanced" ? 1.25 : 1;
+    this.rate = diff === "beginner" ? 0.58 : diff === "advanced" ? 0.95 : 0.74;
   }
 
   protected addScore(n: number, x?: number, y?: number) {

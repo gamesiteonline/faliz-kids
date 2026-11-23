@@ -11,7 +11,7 @@ import {
   VolumeX,
 } from "lucide-react";
 import { allGames, findGame, findWorld, WORLDS } from "../catalog";
-import { setMusic, setSfx, unlockAudio } from "../audio";
+import { setMusic, setSfx, setTune, tuneFor, unlockAudio, TUNE_LIST } from "../audio";
 import {
   ACHIEVEMENTS,
   bootSave,
@@ -73,6 +73,13 @@ export function FalizApp() {
     setMusic(settings.music);
     setSfx(settings.sfx);
   }, [settings.music, settings.sfx]);
+
+  useEffect(() => {
+    const worldId =
+      screen.name === "world" ? screen.worldId : screen.name === "game" ? findGame(screen.gameId)?.worldId : "";
+    const pick = settings.tune === "auto" ? tuneFor(worldId ?? "") : settings.tune;
+    setTune(pick);
+  }, [screen, settings.tune]);
 
   useEffect(() => {
     const playing = screen.name === "lobby" || screen.name === "world" || screen.name === "game" || screen.name === "customize";
@@ -320,6 +327,7 @@ function Lobby({
   const patch = useFaliz((s) => s.patchSettings);
   const music = useFaliz((s) => s.settings.music);
   const sfx = useFaliz((s) => s.settings.sfx);
+  const tune = useFaliz((s) => s.settings.tune);
   return (
     <section className="relative h-dvh">
       <div className="absolute inset-0">
@@ -375,6 +383,21 @@ function Lobby({
               {(["low", "medium", "high"] as const).map((q) => (
                 <button key={q} type="button" className={`kid-btn capitalize ${quality === q ? "bg-royal text-cream" : "bg-foam"}`} onClick={() => patch({ quality: q })}>
                   {q}
+                </button>
+              ))}
+            </div>
+            <div className="mt-2 flex flex-wrap gap-2">
+              <button type="button" className={`kid-btn ${tune === "auto" ? "bg-royal text-cream" : "bg-foam"}`} onClick={() => patch({ tune: "auto" })}>
+                Music follows the island
+              </button>
+              {TUNE_LIST.map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  className={`kid-btn ${tune === item.id ? "bg-gold text-ink" : "bg-foam"}`}
+                  onClick={() => patch({ tune: item.id })}
+                >
+                  {item.name}
                 </button>
               ))}
             </div>
@@ -471,7 +494,7 @@ function WorldPage({
                 <span className="ml-2 text-sm text-ink-soft">Best {stat?.best ?? 0}</span>
               </div>
               <button type="button" className="kid-btn mt-3 bg-royal text-cream" onClick={() => onPlay(game.id)}>
-                Play
+                Play 3 rounds
               </button>
             </article>
           );
@@ -497,7 +520,7 @@ function Result({
   return (
     <section className="flex h-dvh flex-col items-center justify-center gap-3 px-6 text-center">
       <p className="text-sm text-ink-soft">{game?.name}</p>
-      <h1 className="text-4xl">{screen.win ? "You did it!" : "Nice try"}</h1>
+      <h1 className="text-4xl">{screen.win ? "All 3 rounds clear!" : "Nice try"}</h1>
       <div className="flex gap-1">
         {[0, 1, 2].map((i) => (
           <Star key={i} className={`size-10 ${i < screen.stars ? "text-gold" : "text-line"}`} fill={i < screen.stars ? "currentColor" : "none"} />
